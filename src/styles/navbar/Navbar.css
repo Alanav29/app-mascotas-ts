@@ -1,0 +1,10 @@
+.dropdown-menu {
+	display: none;
+	position: absolute;
+	z-index: 4;
+	top: 40px;
+}
+
+.dropdown:focus div {
+	display: block;
+}
