@@ -9,3 +9,15 @@
 	--home-color: rgb(255, 247, 234);
 	--footer-color: rgb(246, 232, 255);
 }
+
+.bg-color-one {
+	background-color: var(--color-one);
+}
+
+.bg-color-two {
+	background-color: var(--color-two);
+}
+
+.bg-color-three {
+	background-color: var(--color-three);
+}

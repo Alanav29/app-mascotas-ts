@@ -24,14 +24,14 @@ const UsersMenu = () => {
 			</a>
 			<div className="border border-gray-300 rounded w-fit p-2 dropdown-menu bg-gray-50 ">
 				<ul className="flex flex-col">
-					<li className="flex m-1">
-						<Link className="hover:text-violet-500" to="/mascotas-perdidas">
-							Mascotas Perdidas
+					<li className="m-1 rounded bg-blue-500 p-2">
+						<Link className="text-white" to="/mascotas-perdidas">
+							Iniciar sesión
 						</Link>
 					</li>
-					<li className="flex m-1">
-						<Link className="hover:text-violet-500" to="/mascotas-resguardadas">
-							Mascotas Resguardadas
+					<li className="m-1 rounded bg-emerald-400 p-2">
+						<Link className="text-white" to="/mascotas-resguardadas">
+							Registrarse
 						</Link>
 					</li>
 				</ul>

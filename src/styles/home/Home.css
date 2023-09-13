@@ -1,3 +1,19 @@
 .bg-home {
 	background-color: var(--home-color);
 }
+
+.home-buttons-section {
+	background: var(--home-color);
+	background: linear-gradient(
+		180deg,
+		var(--home-color) 50%,
+		rgba(255, 255, 255, 1) 50%
+	);
+}
+
+.pet-buttons-box {
+	box-shadow: 0px 0px 13px 10px rgba(0, 0, 0, 0.1);
+	background-color: white;
+	border-radius: 0.25rem;
+	width: fit-content;
+}
