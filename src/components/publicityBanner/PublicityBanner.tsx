@@ -34,8 +34,12 @@ const PublicityBanner: React.FC<Props> = ({ items }) => {
 				<SwiperSlide>
 					<img src={items[0].img} />
 				</SwiperSlide>
-				<SwiperSlide>Slide 2</SwiperSlide>
-				<SwiperSlide>Slide 3</SwiperSlide>
+				<SwiperSlide>
+					<img src={items[1].img} />
+				</SwiperSlide>
+				<SwiperSlide>
+					<img src={items[2].img} />
+				</SwiperSlide>
 			</Swiper>
 		</>
 	);

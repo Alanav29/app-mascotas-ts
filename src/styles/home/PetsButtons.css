@@ -13,6 +13,10 @@
 	font-size: 1.5rem;
 }
 
+.petButtonHome:hover {
+	transform: scale(1.1);
+}
+
 @media (max-width: 576px) {
 	.petButtonHome {
 		font-size: 1rem;

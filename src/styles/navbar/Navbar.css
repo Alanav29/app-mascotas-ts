@@ -5,6 +5,6 @@
 	top: 40px;
 }
 
-.dropdown:focus div {
-	display: block;
+.dropdown:hover div {
+	display: flex;
 }

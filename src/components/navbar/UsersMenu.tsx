@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 const UsersMenu = () => {
 	return (
-		<button className="flex flex-col items-end dropdown">
-			<a className="mx-2 flex items-center">
+		<div className="flex flex-col items-end dropdown">
+			<button className="mx-2 flex items-center ">
 				<div>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -21,22 +21,20 @@ const UsersMenu = () => {
 					</svg>
 				</div>
 				<div>Usuarios</div>
-			</a>
+			</button>
 			<div className="border border-gray-300 rounded w-fit p-2 dropdown-menu bg-gray-50 ">
-				<ul className="flex flex-col">
-					<li className="m-1 rounded bg-blue-500 p-2">
-						<Link className="text-white" to="/mascotas-perdidas">
-							Iniciar sesión
-						</Link>
-					</li>
-					<li className="m-1 rounded bg-emerald-400 p-2">
-						<Link className="text-white" to="/mascotas-resguardadas">
-							Registrarse
-						</Link>
-					</li>
-				</ul>
+				<div className="m-1 rounded bg-blue-500 p-2">
+					<Link className="text-white" to="/mascotas-perdidas">
+						Iniciar sesión
+					</Link>
+				</div>
+				<div className="m-1 rounded bg-emerald-400 p-2">
+					<Link className="text-white" to="/mascotas-resguardadas">
+						Registrarse
+					</Link>
+				</div>
 			</div>
-		</button>
+		</div>
 	);
 };
 
