@@ -12,7 +12,7 @@ const PetsButtons = () => {
 				/>
 				<PetButton
 					classBg={"bg-color-two"}
-					buttonText={"Mascotas Resguardadas"}
+					buttonText={"Mascotas en Resguardo"}
 					url={"/mascotas-resguardadas"}
 				/>
 				<PetButton

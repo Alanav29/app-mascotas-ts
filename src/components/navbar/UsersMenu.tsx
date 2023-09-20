@@ -1,6 +1,52 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { selectUser, setUser } from "../../features/userFeature";
+import { useSelector, useDispatch } from "react-redux";
 
 const UsersMenu = () => {
+	const navigate = useNavigate();
+	const user = useSelector(selectUser);
+	const dispatch = useDispatch();
+
+	const signOff = () => {
+		window.localStorage.clear();
+		dispatch(setUser(false));
+		navigate("/");
+	};
+
+	let userOptions = <></>;
+
+	if (user === false) {
+		userOptions = (
+			<>
+				<div className="m-1 rounded bg-blue-500 p-2">
+					<Link className="text-white" to="/signIn">
+						Iniciar sesión
+					</Link>
+				</div>
+				<div className="m-1 rounded bg-emerald-400 p-2">
+					<Link className="text-white" to="/signUp">
+						Registrarse
+					</Link>
+				</div>
+			</>
+		);
+	} else if (user.email) {
+		userOptions = (
+			<>
+				<div className="m-1 rounded bg-amber-400 p-2">
+					<Link className="text-white" to="/user-data">
+						Mi perfil
+					</Link>
+				</div>
+				<button
+					className="bg-red-600 p-2 text-white rounded m-1"
+					onClick={signOff}
+				>
+					Cerrar Sesion
+				</button>
+			</>
+		);
+	}
 	return (
 		<div className="flex flex-col items-end dropdown">
 			<button className="mx-2 flex items-center ">
@@ -23,16 +69,7 @@ const UsersMenu = () => {
 				<div>Usuarios</div>
 			</button>
 			<div className="border border-gray-300 rounded w-fit p-2 dropdown-menu bg-gray-50 ">
-				<div className="m-1 rounded bg-blue-500 p-2">
-					<Link className="text-white" to="/mascotas-perdidas">
-						Iniciar sesión
-					</Link>
-				</div>
-				<div className="m-1 rounded bg-emerald-400 p-2">
-					<Link className="text-white" to="/mascotas-resguardadas">
-						Registrarse
-					</Link>
-				</div>
+				{userOptions}
 			</div>
 		</div>
 	);
