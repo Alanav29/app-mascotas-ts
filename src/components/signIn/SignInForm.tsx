@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/userFeature";
 import { useNavigate } from "react-router-dom";
-import signIn from "../../utils/signInReq";
+import signIn from "../../utils/userRequest/signInReq";
 
 type signInData = {
 	email: string;
@@ -59,27 +59,25 @@ const SignInForm = () => {
 		<>
 			<form onSubmit={handleSubmit(trySignIn)} className="flex flex-col">
 				<div className="mb-3 flex flex-col">
-					<label htmlFor="email-input" className="w-fit">
+					<label htmlFor="email-input" className="w-fit mb-2">
 						Email
 					</label>
 					<input
 						type="email"
-						className="rounded border-amber-400 border max-w-xs"
+						className="rounded border-gray-300 border mb-2 p-1 px-2"
 						id="email-input"
 						{...register("email")}
 						placeholder="name@example.com"
 					/>
-					<div id="emailHelp" className="form-text">
-						No compartas tus datos con nadie
-					</div>
+					<p className="mb-2 text-gray-500">No compartas tus datos con nadie</p>
 				</div>
 				<div className="mb-3 flex flex-col">
-					<label htmlFor="password-input" className="w-fit">
+					<label htmlFor="password-input" className="w-fit mb-2">
 						Contraseña
 					</label>
 					<input
 						type="password"
-						className="rounded border-amber-400 border max-w-xs"
+						className="rounded border-gray-300 border mb-2 p-1 px-2"
 						id="password-input"
 						{...register("password")}
 						placeholder="Password"

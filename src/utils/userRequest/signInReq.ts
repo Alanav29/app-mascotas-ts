@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "qs";
-import { userSignInEndpoint } from "../config/apiRoutes";
+import { userSignInEndpoint } from "../../config/apiRoutes";
 
 const signIn = (email: string, password: string) => {
 	const data = qs.stringify({
