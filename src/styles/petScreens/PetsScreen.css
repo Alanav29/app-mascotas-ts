@@ -1,0 +1,17 @@
+.petsFilter {
+	background-color: var(--petsFilter-color);
+	border-radius: 999px;
+}
+
+.petsBox {
+	width: auto;
+}
+
+.addPetCard {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-width: 15rem;
+	min-width: 10rem;
+	min-height: 100px;
+}

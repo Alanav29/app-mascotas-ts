@@ -8,16 +8,22 @@ type userSignedState = {
 	isAdmin: boolean;
 };
 
-type userState = {
+interface userState {
 	user: {
-		value: userSignedState | false;
+		value: userSignedState;
 	};
-};
+}
 
 export const userFeature = createSlice({
 	name: "user",
 	initialState: {
-		value: false,
+		value: {
+			_id: false,
+			email: false,
+			token: false,
+			name: false,
+			isAdmin: false,
+		},
 	},
 	reducers: {
 		setUser: (state, action) => {
