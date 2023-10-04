@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../../styles/LostPetCard.css";
+import "../../styles/petScreens/PetCard.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../features/userFeature";
 import { setChange } from "../../features/changesCounterFeature";
@@ -71,7 +71,7 @@ const PetCard: React.FC<Props> = ({ pet, delPet, cardUrl }) => {
 
 	return (
 		<>
-			<div className="card m-3 lostPetCard">
+			<div className="card m-3 petCard">
 				<img
 					src={pet.image.secure_url}
 					className="petCardImg rounded-top"

@@ -1,0 +1,279 @@
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "../../features/userFeature";
+import {
+	setChange,
+	selectChangesCounter,
+} from "../../features/changesCounterFeature";
+import Comment from "./Comment";
+
+type Pet = {
+	name: string;
+	_id: string;
+	user_id: string;
+	createdAt: string;
+	date_lost: string;
+	date_found: string;
+	description: string;
+	image: {
+		secure_url: string;
+	};
+};
+
+type Comment = { text: string; _id: string; user_id: string; username: string };
+
+type Comments = Array<Comment>;
+type ResultPet = { status: number; data: Pet };
+type ResultComments = { status: number; data: Comments };
+type DelPet = (petId: string | undefined, token: string) => ResultPet;
+type PostComment = (
+	commentData: Comment,
+	postId: string,
+	postType: string,
+	token: string
+) => ResultComments;
+type GetComments = (lostPetId: string | undefined) => ResultComments;
+type GetPet = (petId: string) => ResultPet;
+
+interface Props {
+	delPet: DelPet;
+	postComment: PostComment;
+	getComments: GetComments;
+	getPet: GetPet;
+	editUrl: string;
+}
+
+type PetParams = {
+	petId: string;
+};
+
+const PetDetail: React.FC<Props> = ({
+	delPet,
+	getComments,
+	postComment,
+	getPet,
+	editUrl,
+}) => {
+	const { register, handleSubmit, reset } = useForm<Comment>();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const user = useSelector(selectUser);
+	const changesCounter = useSelector(selectChangesCounter);
+	const { petId } = useParams<PetParams>();
+	const initialPet: Pet = {
+		name: "",
+		user_id: "",
+		_id: "",
+		createdAt: "",
+		date_lost: "",
+		date_found: "",
+		description: "",
+		image: {
+			secure_url: "",
+		},
+	};
+	const [pet, setPet] = useState<Pet>(initialPet);
+	const [comments, setComments] = useState<Comments>([]);
+	let delButton = <></>;
+	let editButton = <></>;
+	let commentForm = <></>;
+
+	const fetchGetLostPet = async () => {
+		if (petId) {
+			try {
+				const result = getPet(petId);
+
+				if (result.status === 200) {
+					setPet(result.data);
+				}
+			} catch (e) {
+				console.log(
+					"Ocurrio un error al traer la mascota perdida",
+					(e as Error).message
+				);
+			}
+		} else {
+			setPet(initialPet);
+		}
+	};
+
+	const fetchComments = async () => {
+		try {
+			const result = await getComments(petId);
+
+			if (result.status === 200) {
+				setComments(result.data);
+			}
+		} catch (e) {
+			console.log(
+				"Ocurrio un error al traer los comentarios de la mascota perdida",
+				(e as Error).message
+			);
+		}
+	};
+
+	useEffect(() => {
+		fetchGetLostPet();
+	}, []);
+
+	useEffect(() => {
+		fetchComments();
+	}, [changesCounter]);
+
+	const fetchDeletePet = async () => {
+		try {
+			const result = await delPet(petId, user.token);
+
+			if (result.status === 200) {
+				navigate("/");
+				dispatch(setChange(1));
+				console.log("se borro mascota perdida");
+			}
+		} catch (e) {
+			console.log(
+				"Ocurrio un error al borrar la mascota ",
+				(e as Error).message
+			);
+		}
+	};
+
+	const deletePet = () => {
+		fetchDeletePet();
+	};
+
+	let dateType = "";
+	let date = pet.createdAt;
+	let postType = "";
+	if (pet.date_lost) {
+		dateType = "Fecha de perdida";
+		date = pet.date_lost;
+		postType = "LostPet";
+	} else if (pet.date_found) {
+		dateType = "Fecha en que se encontro";
+		date = pet.date_found;
+		postType = "ShelteredPet";
+	} else {
+		dateType = "Fecha de subida";
+		postType = "AdoptionPet";
+	}
+
+	const fetchPostComment = async (data: Comment) => {
+		if (petId) {
+			try {
+				const result = await postComment(data, petId, postType, user.token);
+
+				if (result.status === 200) {
+					dispatch(setChange(1));
+					console.log("se agrego comentario");
+				}
+			} catch (e) {
+				console.log(
+					"Ocurrio un error al publicar comentario ",
+					(e as Error).message
+				);
+			}
+		}
+	};
+
+	const addComment = (data: Comment) => {
+		reset();
+		fetchPostComment(data);
+	};
+
+	if (user.isAdmin) {
+		delButton = (
+			<button onClick={deletePet} className="btn btn-danger me-4">
+				Borrar mascota
+			</button>
+		);
+
+		editButton = (
+			<Link to={`${editUrl}${petId}`} className="btn btn-primary">
+				Editar mascota
+			</Link>
+		);
+	} else if (user._id === pet.user_id) {
+		editButton = (
+			<Link to={`${editUrl}${petId}`} className="btn btn-primary">
+				Editar mascota
+			</Link>
+		);
+	}
+
+	if (user.token) {
+		commentForm = (
+			<div className="my-2">
+				<form className="d-flex" onSubmit={handleSubmit(addComment)}>
+					<textarea
+						{...register("text")}
+						className="form-control"
+						aria-label="With textarea"
+						id="lostPetCommentInput"
+						placeholder="Agrega un comentario"
+					></textarea>
+					<button
+						type="submit"
+						className="p-2 bg-success btn text-white mx-2 d-flex align-items-center"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							fill="currentColor"
+							className="bi bi-caret-right-fill"
+							viewBox="0 0 16 16"
+						>
+							<path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+						</svg>
+					</button>
+				</form>
+			</div>
+		);
+	}
+
+	let name = "";
+	if (pet.name === "") {
+		name = "Sin Nombre";
+	} else {
+		name = pet.name;
+	}
+
+	return (
+		<div className="container my-4">
+			<div className="mb-3">
+				<div className="row g-0">
+					<div className="col-md-5 p-4 ps-0">
+						<img
+							src={pet.image.secure_url}
+							className="img-fluid rounded-start"
+							alt="Pet image"
+						/>
+					</div>
+					<div className="col-md-7 p-4">
+						<div className="">
+							<h5 className="fs-5">{name}</h5>
+							<p className="fs-6 mb-2">{pet.description}</p>
+							<h5 className="fs-5">{dateType}</h5>
+							<h6 className="fs-6">{date}</h6>
+							<div className="d-flex">
+								{delButton}
+								{editButton}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div>
+				<h5 className="my-4">Comentarios</h5>
+				{comments.map((comment) => (
+					<Comment key={comment._id} comment={comment} />
+				))}
+				{commentForm}
+			</div>
+		</div>
+	);
+};
+
+export default PetDetail;
